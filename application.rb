@@ -14,7 +14,7 @@ class Application < Sinatra::Base
   assets {
     serve '/css', from: 'assets/stylesheets'
     serve '/images', from: 'assets/images'
-    serve '/js', from: 'assets/javascripts123'
+    serve '/js', from: 'assets/javascripts'
 
     css :application, '/css/application.css', %w(/css/index.css /css/modal.css)
     js :application, '/js/application.js', %w( /js/jquery-1.9.1.js  /js/order.js)

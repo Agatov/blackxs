@@ -28,6 +28,9 @@ set :deploy_to, "/apps/sinatra/#{application}"
 set :unicorn_conf, "#{deploy_to}/shared/unicorn.rb"
 set :unicorn_pid, "#{deploy_to}/shared/tmp/pids/unicorn.pid"
 
+
+before 'bundle:install', 'deploy:create_folders'
+
 # Unicorn control tasks
 namespace :deploy do
   task :restart do
@@ -38,5 +41,11 @@ namespace :deploy do
   end
   task :stop do
     run "if [ -f #{unicorn_pid} ]; then kill -QUIT `cat #{unicorn_pid}`; fi"
+  end
+
+  task :create_folders do
+    run "mkdir #{deploy_to}/public/images"
+    run "mkdir #{deploy_to}/public/stylesheets"
+    run "mkdir #{deploy_to}/public/javascripts"
   end
 end
