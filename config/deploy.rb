@@ -1,15 +1,8 @@
-# config/deploy.rb
-# We're using RVM on a server, need this.
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))
-require 'rvm/capistrano'
-set :rvm_ruby_string, '1.9.3'
-set :rvm_type, :user
-
 # Bundler tasks
 require 'bundler/capistrano'
 
 set :application, "blackxs"
-set :repository,  "git@github.com:stulentsev/blackxs.git"
+set :repository,  "git@github.com:Agatov/blackxs.git"
 
 set :scm, :git
 
@@ -31,7 +24,7 @@ role :app, host
 set :env, :production
 
 # Where will it be located on a server?
-set :deploy_to, "/apps#{application}"
+set :deploy_to, "/apps/sinatra/#{application}"
 set :unicorn_conf, "#{deploy_to}/shared/unicorn.rb"
 set :unicorn_pid, "#{deploy_to}/shared/tmp/pids/unicorn.pid"
 
