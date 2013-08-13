@@ -29,23 +29,26 @@ set :unicorn_conf, "#{deploy_to}/shared/unicorn.rb"
 set :unicorn_pid, "#{deploy_to}/shared/tmp/pids/unicorn.pid"
 
 
-before 'bundle:install', 'deploy:create_folders'
+#before 'bundle:install', 'deploy:create_folders'
 
 # Unicorn control tasks
 namespace :deploy do
   task :restart do
-    run "if [ -f #{unicorn_pid} ]; then kill -USR2 `cat #{unicorn_pid}`; else cd #{deploy_to}/current && bundle exec unicorn -c #{unicorn_conf} -E #{env} -D; fi"
+    run "if [ -f #{unicorn_pid} ]; then kill -QUIT `cat #{unicorn_pid}`; fi"
+    run "cd #{deploy_to}/current && bundle exec unicorn -c #{unicorn_conf} -E #{env} -D"
   end
+
   task :start do
-    run "cd #{deploy_to}/current && bundle exec unicorn -c #{unicorn_conf} -E #{rails_env} -D"
+    run "cd #{deploy_to}/current && bundle exec unicorn -c #{unicorn_conf} -E #{env} -D"
   end
   task :stop do
     run "if [ -f #{unicorn_pid} ]; then kill -QUIT `cat #{unicorn_pid}`; fi"
   end
 
   task :create_folders do
-    run "mkdir #{deploy_to}/public/images"
-    run "mkdir #{deploy_to}/public/stylesheets"
-    run "mkdir #{deploy_to}/public/javascripts"
+    run "mkdir #{current_release}/public"
+    run "mkdir #{current_release}/public/images"
+    run "mkdir #{current_release}/public/stylesheets"
+    run "mkdir #{current_release}/public/javascripts"
   end
 end
